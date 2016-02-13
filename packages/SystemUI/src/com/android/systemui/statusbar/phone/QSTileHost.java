@@ -49,6 +49,7 @@ import com.android.systemui.qs.tiles.DataSaverTile;
 import com.android.systemui.qs.tiles.DndTile;
 import com.android.systemui.qs.tiles.FlashlightTile;
 import com.android.systemui.qs.tiles.HotspotTile;
+import com.android.systemui.qs.tiles.ImeTile;
 import com.android.systemui.qs.tiles.IntentTile;
 import com.android.systemui.qs.tiles.LocationTile;
 import com.android.systemui.qs.tiles.MusicTile;
@@ -450,6 +451,7 @@ public class QSTileHost implements QSTile.Host, Tunable {
         else if (tileSpec.equals("screenshot")) return new ScreenshotTile(this);
         else if (tileSpec.equals("sync")) return new SyncTile(this);
         else if (tileSpec.equals("music")) return new MusicTile(this);
+        else if (tileSpec.equals("ime")) return new ImeTile(this);
         else if (tileSpec.equals(NightModeTile.NIGHT_MODE_SPEC))
             return new NightModeTile(this);
         // Intent tiles.
