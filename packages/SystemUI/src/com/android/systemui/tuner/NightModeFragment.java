@@ -29,7 +29,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Switch;
-import android.widget.TextView;
 import com.android.internal.logging.MetricsLogger;
 import com.android.internal.logging.MetricsProto.MetricsEvent;
 import com.android.systemui.R;
@@ -48,7 +47,7 @@ public class NightModeFragment extends PreferenceFragment implements Tunable,
     private static final CharSequence KEY_ADJUST_TINT = "adjust_tint";
     private static final CharSequence KEY_ADJUST_BRIGHTNESS = "adjust_brightness";
 
-    private Switch switchWidget;
+    private Switch mSwitch;
 
     private NightModeController mNightModeController;
     private SwitchPreference mAutoSwitch;
@@ -95,28 +94,18 @@ public class NightModeFragment extends PreferenceFragment implements Tunable,
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        final View switchBar = view.findViewById(R.id.switch_bar);
-        switchWidget = (Switch) switchBar.findViewById(android.R.id.switch_widget);
-        final TextView switchText = (TextView) switchBar.findViewById(R.id.switch_text);
-        switchWidget.setChecked(mNightModeController.isEnabled());
-        switchText.setText(mNightModeController.isEnabled()
-                ? getString(R.string.switch_bar_on)
-                : getString(R.string.switch_bar_off));
-
-        switchWidget.setOnClickListener(new View.OnClickListener() {
+        View switchBar = view.findViewById(R.id.switch_bar);
+        mSwitch = (Switch) switchBar.findViewById(android.R.id.switch_widget);
+        mSwitch.setChecked(mNightModeController.isEnabled());
+        switchBar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 boolean newState = !mNightModeController.isEnabled();
-                MetricsLogger.action(getContext(),
-                        MetricsEvent.ACTION_TUNER_NIGHT_MODE, newState);
+                MetricsLogger.action(getContext(), MetricsEvent.ACTION_TUNER_NIGHT_MODE, newState);
                 mNightModeController.setNightMode(newState);
-                switchWidget.setChecked(newState);
-                switchText.setText(newState
-                        ? getString(R.string.switch_bar_on)
-                        : getString(R.string.switch_bar_off));
+                mSwitch.setChecked(newState);
             }
         });
-
     }
 
     @Override
@@ -207,7 +196,7 @@ public class NightModeFragment extends PreferenceFragment implements Tunable,
 
     @Override
     public void onNightModeChanged() {
-        switchWidget.setChecked(mNightModeController.isEnabled());
+        mSwitch.setChecked(mNightModeController.isEnabled());
     }
 
     @Override
